@@ -170,7 +170,9 @@ const Profile = () => {
             <ul className="text-sm text-gray-600">
               <li className="py-2">Personal Information</li>
               <li className="py-2">Subscription Plan</li>
-              <li className="py-2">Security Settings</li>
+              <li className="py-2">
+                <Link href="/booking-history">Booking History</Link>
+              </li>
             </ul>
           </div>
 

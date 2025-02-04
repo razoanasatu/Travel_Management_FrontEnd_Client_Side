@@ -3,88 +3,23 @@ import Footer from "@/app/components/footer";
 import Navbar from "@/app/components/navbar";
 import { useRouter } from "next/navigation"; // Import useRouter hook
 import { useState } from "react";
+
 export default function Checkout() {
   const router = useRouter(); // Initialize the useRouter hook
-  const [cardHolderName, setCardHolderName] = useState<string>("");
-  const [cardNumber, setCardNumber] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [ticketTitle, setTicketTitle] = useState<string>("");
+  const [ticketDate, setTicketDate] = useState<string>("");
+  const [ticketTime, setTicketTime] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false); // state to control modal visibility
 
   const handleProceedToCheckout = async () => {
-    // // Get userId from cookies (make sure you're storing userId with key 'user.id')
-    // const userCookie: any = Cookies.get("user");
-
-    // // Parse the user object
-    // const user = JSON.parse(userCookie);
-
-    // // Extract userId as a number
-    // const userId = user.id;
-
-    // // Validate form fields
-    // if (!cardHolderName || !cardNumber || !password) {
-    //   alert("Please fill out all fields");
-    //   return;
-    // }
-
-    // try {
-    //   // First API request to get id and userId from the backend
-    //   const response1 = await fetch(`${baseUrl}/user-id `, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ userId }), // Pass userId from cookies
-    //   });
-
-    //   // Check if the first API call was successful
-    //   if (!response1.ok) {
-    //     throw new Error("First API request failed");
-    //   }
-
-    //   const data1 = await response1.json();
-    //   console.log(data1);
-    //   // Assuming the response has { id, userId }
-    //   const { id, userId: apiUserId } = data1;
-
-    //   // Second API request to book the checkout
-    //   const response2 = await fetch(`${baseUrl}/payment/${data1.id}`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       userId: data1?.userId, // Using userId from the first response
-    //       //bookingId: data1?.id, // Using the id from the first response
-    //       payment_method: "1", // Passing other details from the form
-    //       amount: 489,
-    //       status: "success",
-    //       transaction_no: "123456",
-    //       // Add other fields if necessary
-    //     }),
-    //   });
-
-    //   // Check if the second API call was successful
-    //   if (!response2.ok) {
-    //     throw new Error("Second API request failed");
-    //   } else {
-    //     setShowModal(true);
-    //   }
-    //   const data2 = await response2.json();
-    //   console.log(data2);
-    //   // Handle the response from the second API (e.g., success message)
-    //   console.log("Checkout successful:", data2);
-    // } catch (error) {
-    //   console.error("Error during checkout process:", error);
-    //   alert("An error occurred during checkout. Please try again.");
-    // }
-
     // Validate form fields
-    if (!cardHolderName || !cardNumber || !password) {
+    if (!ticketTitle || !ticketDate || !ticketTime) {
       alert("Please fill out all fields");
       return;
     }
     setShowModal(true);
   };
+
   const handleBackClick = () => {
     // Redirect to the homepage when the "Back" button is clicked
     router.push("/");
@@ -102,41 +37,51 @@ export default function Checkout() {
           <form className="mt-4">
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
-                Card Holder Name
+                Ticket Title
+              </label>
+              <select
+                value={ticketTitle}
+                onChange={(e) => setTicketTitle(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-md"
+              >
+                <option value="">Select Ticket Type</option>
+                <option value="Single">Single</option>
+                <option value="Double">Double</option>
+                <option value="Family">Family</option>
+              </select>
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Ticket Date
               </label>
               <input
-                type="text"
-                value={cardHolderName}
-                onChange={(e) => setCardHolderName(e.target.value)}
+                type="date"
+                value={ticketDate}
+                onChange={(e) => setTicketDate(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded-md"
-                placeholder="Enter your name"
+                placeholder="Select Date"
               />
             </div>
 
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
-                Card Number
+                Ticket Time
               </label>
-              <input
-                type="text"
-                value={cardNumber}
-                onChange={(e) => setCardNumber(e.target.value)}
+              <select
+                value={ticketTime}
+                onChange={(e) => setTicketTime(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded-md"
-                placeholder="Enter your card number"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                placeholder="Enter your password"
-              />
+              >
+                <option value="">Select Time</option>
+                <option value="08:00 AM">08:00 AM</option>
+                <option value="10:00 AM">10:00 AM</option>
+                <option value="12:00 PM">12:00 PM</option>
+                <option value="02:00 PM">02:00 PM</option>
+                <option value="04:00 PM">04:00 PM</option>
+                <option value="06:00 PM">06:00 PM</option>
+                <option value="08:00 PM">08:00 PM</option>
+              </select>
             </div>
 
             <button

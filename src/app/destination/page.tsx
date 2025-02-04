@@ -15,6 +15,7 @@ interface Destination {
   imagePath: string;
   rating?: number;
   extraInfo?: string;
+  price: number; // Add the price field here
 }
 
 export default function Destination() {
@@ -124,6 +125,14 @@ export default function Destination() {
           </h2>
           <p className="mt-4 text-gray-700">
             {filteredDestination.description}
+          </p>
+        </div>
+
+        {/* Price Section */}
+        <div className="mt-4 mx-6 ">
+          <h3 className="text-xl font-semibold text-black">Price</h3>
+          <p className="text-lg font-bold text-gray-800">
+            ${filteredDestination.price} 499
           </p>
         </div>
 

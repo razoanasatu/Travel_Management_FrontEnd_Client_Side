@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
@@ -23,6 +22,11 @@ interface Destination {
 export default function Booking() {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [destinations, setDestinations] = useState<Destination[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filteredDestinations, setFilteredDestinations] = useState<
+    Destination[]
+  >([]);
+
   // Fetch destinations data from backend API
   const fetchDestinations = async () => {
     try {
@@ -34,12 +38,18 @@ export default function Booking() {
     }
   };
 
+  // Filter destinations based on search query
+  useEffect(() => {
+    setFilteredDestinations(
+      destinations.filter((destination) =>
+        destination.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+  }, [searchQuery, destinations]);
+
   useEffect(() => {
     fetchDestinations();
   }, []); // The empty dependency array ensures this runs only once on mount
-  useEffect(() => {
-    console.log(destinations);
-  }, [destinations]); // The empty dependency array ensures this runs only once on mount
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % destinations.length);
@@ -85,6 +95,32 @@ export default function Booking() {
               className="h-20 w-40 cursor-pointer"
             />
           </div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="mx-8 mb-6 text-black">
+          <input
+            type="text"
+            placeholder="Search for a destination..."
+            className="w-full p-3 border-2 border-gray-300 rounded-lg"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {searchQuery && filteredDestinations.length > 0 && (
+            <div className="mt-2 border-2 border-gray-300 rounded-lg bg-white shadow-md max-h-60 overflow-y-auto">
+              {filteredDestinations.map((destination) => (
+                <Link
+                  href={`/destination?name=${destination.name}`}
+                  key={destination.id}
+                  passHref
+                >
+                  <div className="p-2 cursor-pointer hover:bg-gray-200">
+                    {destination.name}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Section Title with Navigation */}
